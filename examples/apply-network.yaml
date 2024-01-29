@@ -1,0 +1,49 @@
+---
+name: Apply - Network
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/network/*'
+      - 'terraform/network/**'
+      - '.github/workflows/apply-network.yaml'
+      - '.github/workflows/reusable-cd-workflow.yaml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ## run terraform plan
+  plan_poc:
+    name: Plan - Network
+    uses: "./.github/workflows/reusable-ci-workflow.yaml"
+    with:
+      working_directory: network
+      environment: poc
+      assume_role_arn: ""
+      publish_plan_artifact: true  # only for apply step
+    secrets: inherit
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+
+  ## run terraform plan
+  apply_poc:
+    name: Apply - Network
+    uses: "./.github/workflows/reusable-cd-workflow.yaml"
+    needs: plan_poc
+    with:
+      working_directory: network
+      environment: poc
+      assume_role_arn: ""
+      plan_id: ${{ needs.plan_poc.outputs.plan_id }}
+    secrets: inherit
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
