@@ -111,9 +111,9 @@ While the following files are a helpful starting point, it may not fulfill all t
     - **Usage:**
         - It is triggered on push events to the `main` branch.
         - Only runs on changes to:
-            - `terraform/sqs/*`
-            - `terraform/sqs/**`
-            - `.github/workflows/apply-sqs.yaml`
+            - `terraform/network/*`
+            - `terraform/network/**`
+            - `.github/workflows/apply-network.yaml`
             - `.github/workflows/reusable-cd-workflow.yaml`
 
 - `snyk.yaml`
