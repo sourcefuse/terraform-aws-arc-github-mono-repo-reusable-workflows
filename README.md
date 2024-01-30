@@ -3,9 +3,8 @@ This document is designed to assist you in getting started with workflows and th
 
 ## Prerequisites
 - A GitHub account with access to your Organization
-  - GitHub OIDC configured, see [terraform-aws-arc-github-iam](https://github.com/sourcefuse/terraform-aws-arc-github-iam) for information on implementing
-    this for your account
-- Access to the projects mono repo repository
+  - GitHub OIDC configured, see [terraform-aws-arc-github-iam](https://github.com/sourcefuse/terraform-aws-arc-github-iam) for implementation information for your account
+- Access to the project's mono repo repository
 - Basic knowledge of Terraform and GitHub Actions
 
 ## Example Workflows
@@ -127,7 +126,7 @@ project's needs, environment variables, and specific Terraform configurations.
 ### Customization and Considerations
 When utilizing these example workflows, keep in mind the following:
 
-- **Environment Variables:** Review, update, or add the environment variables in the workflows to match your project's requirements.
+- **Environment Variables:** Review, update, and / or add the environment variables in the workflows to match your project's requirements.
 - **Workflow Triggers:** Adjust the trigger conditions to align with your preferred workflow events.
 - **Terraform Configurations:** These examples assume a generic Terraform mono repo setup. Adapt the workflows to accommodate any specific configurations used in your project.
 
