@@ -2,8 +2,9 @@
 This document is designed to assist you in getting started with workflows and the project's Terraform mono repo.
 
 ## Prerequisites
-- A GitHub account with access to the SourceFuse Organization
-  - GitHub OIDC configured, see [terraform-aws-arc-github-iam](https://github.com/sourcefuse/terraform-aws-arc-github-iam) for information on implementing this for your account
+- A GitHub account with access to your Organization
+  - GitHub OIDC configured, see [terraform-aws-arc-github-iam](https://github.com/sourcefuse/terraform-aws-arc-github-iam) for information on implementing
+    this for your account
 - Access to the projects mono repo repository
 - Basic knowledge of Terraform and GitHub Actions
 
@@ -17,15 +18,16 @@ You can retrieve example workflows for use in your mono repo by doing the follow
 
 - Copy the `.github/` folder under `example/`
    ```bash
-  cp -r example/.github/ /path/to/mono/repo/root/
+  cp -r examples/.github/ /path/to/mono/repo/root/
   ```
 
 - Copy the `scripts/` folder under `example/`
    ```bash
-  cp -r example/scripts/ /path/to/mono/repo/root/
+  cp -r examples/scripts/ /path/to/mono/repo/root/
   ```
 
-Once you've copied the `.github/` and `scripts/` folder to the root of your mono repo, you will need to update `sqs-*.yaml` and `network-*.yaml` files to include your relevant project information.
+Once you've copied the `.github/` and `scripts/` folder to the root of your mono repo, you will need to update `sqs-*.yaml` and `network-*.yaml` files
+to include your relevant project information.
 
 See [Workflow Details](#workflow-details) for more information on the different workflow files and their usage.
 
@@ -75,7 +77,8 @@ The `.github/workflows` directory contains YAML files that define the different 
 In the `.github/workflows` directory, you will find example workflow files, including `sqs-plan.yaml`, `sqs-apply.yaml`, `network-plan.yaml`, and `network-apply.yaml`.
 These files are provided as examples to illustrate the configuration of Terraform workflows for a mono repo. You should modify these to suite your specific use case(s).
 
-While the following files are a helpful starting point, it may not fulfill all the specific requirements of your use case. Consider customizing these files based on your project's needs, environment variables, and specific Terraform configurations.
+While the following files are a helpful starting point, it may not fulfill all the specific requirements of your use case. Consider customizing these files based on your
+project's needs, environment variables, and specific Terraform configurations.
 
 - `plan-sqs.yaml`
     - **Purpose:** This example workflow is designed to perform a Terraform plan operation for changes introduced by pull requests.
@@ -128,4 +131,5 @@ When utilizing these example workflows, keep in mind the following:
 - **Workflow Triggers:** Adjust the trigger conditions to align with your preferred workflow events.
 - **Terraform Configurations:** These examples assume a generic Terraform mono repo setup. Adapt the workflows to accommodate any specific configurations used in your project.
 
-The provided example workflows are meant to be starting points that you can build upon to suit the needs of your Terraform configuration for the mono repo. Thoroughly test and validate the workflows in a lower environment before relying on them in production scenarios.
+The provided example workflows are meant to be starting points that you can build upon to suit the needs of your Terraform configuration for the mono repo.
+Thoroughly test and validate the workflows in a lower environment before relying on them in production scenarios.
