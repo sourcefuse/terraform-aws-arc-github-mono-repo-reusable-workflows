@@ -3,6 +3,7 @@ This document is designed to assist you in getting started with workflows and th
 
 ## Prerequisites
 - A GitHub account with access to the SourceFuse Organization
+  - GitHub OIDC configured, see [terraform-aws-arc-github-iam](https://github.com/sourcefuse/terraform-aws-arc-github-iam) for information on implementing this for your account
 - Access to the projects mono repo repository
 - Basic knowledge of Terraform and GitHub Actions
 
