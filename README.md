@@ -1,5 +1,5 @@
 ## Introduction
-This document is designed to assist you in getting started with workflows and the project's Terraform mono repo.
+This document and repo are designed to assist you in getting started with workflows and the project's Terraform mono repo.
 
 ## Prerequisites
 - A GitHub account with access to your Organization
