@@ -72,6 +72,75 @@ The `.github/workflows` directory contains YAML files that define the different 
 - **Environment Variables:**
     - **ARC_SNYK_TOKEN**:  This is an Organization secret that can be assigned to your repo upon request.
 
+### Reusable Workflows
+- `reusable-ci-workflow.yaml`
+  - **Purpose:** To provide a reusable way of implementing Continuous Integration (CI) workflows for a Terraform mono-repo.
+  - **Usage:**
+    - **Event Trigger:**
+      - The workflow is triggered by the `workflow_call` event, indicating that it is intended to be called by another workflow.
+    - **Input Parameters:**
+      - Defines several input parameters for the workflow, such as `working_directory`, `environment`, `assume_role_arn`, `aws_region`, and `publish_plan_artifact`. 
+        These parameters are meant to be provided when calling this workflow.
+    - **Output Parameter:**
+      - Specifies an output parameter `plan_id`, which is derived from the `plan` job's output.
+    - **Environment Variables:**
+      - Defines environment variables `DIRECTORY` and `ENV` based on the provided input parameters.
+        - These are used in the `action-init-plan-apply.sh` script
+    - **Job Definition:**
+      - Defines a job named `plan` that runs on a `self-hosted` / `arc` runner. This runner can be updated to accommodate your organization runner usage. 
+    - **Job Outputs:**
+      - The `plan` job produces an output parameter `plan_id`, which is then used in the workflow's output section.
+    - **Permissions:**
+      - Specifies permissions for the job, granting write access to certain tokens for subsequent steps.
+    - **Job Steps:**
+      - The job includes multiple steps that perform various actions:
+        - **Checkout:**
+          - Checks out the repository code.
+        - **Install Dependencies:**
+          - Installs `tfenv` and the AWS CLI using custom scripts.
+        - **Set Outputs:**
+          - Sets an output parameter `plan_id` by echoing the short commit SHA to a file (`$GITHUB_OUTPUT`).
+        - **Configure AWS Credentials:**
+          - Configures AWS credentials for the specified environment.
+        - **Initialize Backend:**
+          - Initializes the Terraform backend using a custom script (`action-init-plan-apply.sh`).
+        - **Plan:**
+          - Runs the Terraform plan using the same custom script.
+        - **Publish Terraform Plan:**
+          - Publishes the Terraform plan artifact if the `publish_plan_artifact` option is true and the plan was successful.
+        - **Update Plan Output to PR:**
+          - Adds a comment to the pull request with the Terraform plan output.
+
+- `reusable-cd-workflow.yaml`
+  - **Purpose:** To provide a reusable way of implementing Continuous Delivery (CD) workflows for a Terraform mono-repo.
+  - **Usage:**
+    - **Event Trigger:**
+      - The workflow is triggered by the `workflow_call` event, indicating that it is intended to be called by another workflow.
+    - **Input Parameters:**
+      - Defines several input parameters for the workflow, such as `working_directory`, `environment`, `assume_role_arn`, `aws_region`, and `plan_id`. 
+        These parameters are meant to be provided when calling this workflow.
+    - **Environment Variables:**
+      - Defines environment variables `DIRECTORY` and `ENV` based on the provided input parameters.
+        - These are used in the `action-init-plan-apply.sh` script
+    - **Job Definition:**
+      - Defines a job named `plan` that runs on a `self-hosted` / `arc` runner. This runner can be updated to accommodate your organization runner usage.
+    - **Permissions:**
+      - Specifies permissions for the job, granting write access to certain tokens for subsequent steps.
+    - **Job Steps:**
+      - The job includes multiple steps that perform various actions:
+        - **Checkout:**
+          - Checks out the repository code.
+        - **Install Dependencies:**
+          - Installs `tfenv` and the AWS CLI using custom scripts.
+        - **Download tfplan Artifact:**
+          - Downloads the Terraform plan (`tfplan`) artifact from previous steps using the `actions/download-artifact` action.
+        - **Configure AWS Credentials:**
+          - Configures AWS credentials for the specified environment.
+        - **Initialize Backend:**
+          - Initializes the Terraform backend using a custom script (`action-init-plan-apply.sh`).
+        - **Apply:**
+          - Runs the Terraform apply using the same custom script.
+
 ### Example Workflow Files
 In the `.github/workflows` directory, you will find example workflow files, including `sqs-plan.yaml`, `sqs-apply.yaml`, `network-plan.yaml`, and `network-apply.yaml`.
 These files are provided as examples to illustrate the configuration of Terraform workflows for a mono repo. You should modify these to suite your specific use case(s).
