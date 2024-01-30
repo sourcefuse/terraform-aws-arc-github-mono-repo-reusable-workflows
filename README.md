@@ -16,12 +16,12 @@ You can retrieve example workflows for use in your mono repo by doing the follow
    git clone https://github.com/sourcefuse/terraform-aws-arc-github-mono-repo-reusable-workflows.git
    ```
 
-- Copy the `.github/` folder under `example/`
+- Copy the `.github/` folder under `examples/`
    ```bash
   cp -r examples/.github/ /path/to/mono/repo/root/
   ```
 
-- Copy the `scripts/` folder under `example/`
+- Copy the `scripts/` folder under `examples/`
    ```bash
   cp -r examples/scripts/ /path/to/mono/repo/root/
   ```
