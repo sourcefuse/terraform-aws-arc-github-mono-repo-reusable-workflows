@@ -83,14 +83,14 @@ plan () {
   terraform plan -var-file $ENV.tfvars $EXTRA_ARGS -out $PLAN_FILENAME
   PLAN_OUTPUT=$(terraform show -no-color $PLAN_FILENAME)
 
-  echo "Terraform plan output for $ENV" >> $ENV-plan-output.txt
+  echo "<details><summary>Terraform plan output for $DIRECTORY in $ENV</summary>" >> $ENV-plan-output.txt
   echo "" >> $ENV-plan-output.txt
   echo "\`\`\`text" >> $ENV-plan-output.txt
   echo "" >> $ENV-plan-output.txt
   echo "$PLAN_OUTPUT" >> $ENV-plan-output.txt
   echo "" >> $ENV-plan-output.txt
   echo "\`\`\`" >> $ENV-plan-output.txt
-  echo "" >> $ENV-plan-output.txt
+  echo "</details>" >> $ENV-plan-output.txt
 
 }
 
