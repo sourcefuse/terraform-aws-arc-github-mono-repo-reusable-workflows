@@ -24,7 +24,7 @@ jobs:
     with:
       working_directory: sqs
       environment: poc
-      assume_role_arn: ""
+      assume_role_name: ""
       publish_plan_artifact: true  # only for apply step
     secrets: inherit
     permissions:
@@ -32,15 +32,35 @@ jobs:
       contents: read
       pull-requests: write
 
-  ## run terraform plan
+  ## this is commented out in case we want to use it later
+  # ## Manual approval
+  # approval:
+  #   name: Approve terraform apply - SQS
+  #   needs: plan_poc
+  #   runs-on:
+  #     - self-hosted
+  #     - arc
+  #   steps:
+  #     - name: mannual approval
+  #       uses: trstringer/manual-approval@v1.9.0
+  #       with:
+  #         secret: ${{ github.TOKEN }}
+  #         approvers: shubhamsinha-sf, divyaperumal-sf, tsaucier-sf
+  #         minimum-approvals: 2
+
+  ## run terraform apply
   apply_poc:
     name: Apply - SQS
     uses: "./.github/workflows/reusable-cd-workflow.yaml"
     needs: plan_poc
+    ## this is commented out in case we want to use it later
+    #    needs:
+    #      - plan_poc
+    #      - approval
     with:
       working_directory: sqs
       environment: poc
-      assume_role_arn: ""
+      assume_role_name: ""
       plan_id: ${{ needs.plan_poc.outputs.plan_id }}
     secrets: inherit
     permissions:

@@ -10,10 +10,10 @@ on:  # yamllint disable-line rule:truthy
         required: true
         type: string
         description: "The environment / workspace resources will be created in"
-      assume_role_arn:
+      assume_role_name:
         required: true
         type: string
-        description: "The role ARN to assume against a specified account"
+        description: "The role name to assume against the target environment account"
       aws_region:
         required: false
         type: string
@@ -47,9 +47,11 @@ jobs:
       id-token: write
       contents: read
       pull-requests: write
+    ## uncomment if the repo has environments enabled
+    #    environment: ${{ inputs.environment }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install tfenv
         run: ./scripts/dependencies/install-tfenv.sh
@@ -69,7 +71,7 @@ jobs:
       - name: Configure credentials for ${{ inputs.environment }}
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ inputs.assume_role_arn }}
+          role-to-assume: "arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ inputs.assume_role_name }}"
           aws-region: ${{ inputs.aws_region }}
 
       - name: Initialize backend
