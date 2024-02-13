@@ -45,7 +45,7 @@ jobs:
   #       uses: trstringer/manual-approval@v1.9.0
   #       with:
   #         secret: ${{ github.TOKEN }}
-  #         approvers: shubhamsinha-sf, divyaperumal-sf, tsaucier-sf
+  #         approvers: user1, user2, user3
   #         minimum-approvals: 2
 
   ## run terraform apply
