@@ -1,0 +1,69 @@
+---
+name: Apply - Network
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/network/*'
+      - 'terraform/network/**'
+      - '.github/workflows/apply-network.yaml'
+      - '.github/workflows/reusable-cd-workflow.yaml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ## run terraform plan
+  plan_poc:
+    name: Plan - Network
+    uses: "./.github/workflows/reusable-ci-workflow.yaml"
+    with:
+      working_directory: network
+      environment: poc
+      assume_role_name: ""
+      publish_plan_artifact: true  # only for apply step
+    secrets: inherit
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+
+  ## this is commented out in case we want to use it later
+  # ## Manual approval
+  # approval:
+  #   name: Approve terraform apply - SQS
+  #   needs: plan_poc
+  #   runs-on:
+  #     - self-hosted
+  #     - arc
+  #   steps:
+  #     - name: mannual approval
+  #       uses: trstringer/manual-approval@v1.9.0
+  #       with:
+  #         secret: ${{ github.TOKEN }}
+  #         approvers: user1, user2, user3
+  #         minimum-approvals: 2
+
+  ## run terraform apply
+  apply_poc:
+    name: Apply - Network
+    uses: "./.github/workflows/reusable-cd-workflow.yaml"
+    needs: plan_poc
+    ## this is commented out in case we want to use it later
+    #    needs:
+    #      - plan_poc
+    #      - approval
+    with:
+      working_directory: network
+      environment: poc
+      assume_role_name: ""
+      plan_id: ${{ needs.plan_poc.outputs.plan_id }}
+    secrets: inherit
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
